@@ -25,6 +25,8 @@ jobs:
       with:
         ruby-version: ${{ matrix.ruby-version }}
         bundler-cache: false
+    - name: Bundle Update
+      run: bundle update
     - name: Bundle Install (Jekyll ${{ matrix.jekyll-version }})
       run: bundle install
       env:
