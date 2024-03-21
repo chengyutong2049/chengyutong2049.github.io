@@ -28,7 +28,7 @@ jobs:
     - name: Bundle Update
       run: bundle update
     - name: Bundle Install (Jekyll ${{ matrix.jekyll-version }})
-      run: bundle install --no-deployment
+      run: bundle install
       env:
         BUNDLE_GEMFILE: fixtures/Gemfile-jekyll-${{ matrix.jekyll-version }}
     - name: Init Search
