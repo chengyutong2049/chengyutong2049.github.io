@@ -16,7 +16,7 @@
 title: CiCi Home
 description: 
 baseurl: "" # the subpath of your site, e.g. /blog
-url: https://chengyutong2049.github.io
+url: https://chengyutong2049.github.io/cici-home
 # url: "https://chengyutong2049.github.io" # the base hostname & protocol for your site, e.g. http://example.com
 repository: chengyutong2049/cici-home # for github-metadata
 
