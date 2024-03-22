@@ -25,10 +25,6 @@ jobs:
       with:
         ruby-version: ${{ matrix.ruby-version }}
         bundler-cache: false
-    - name: Unfreeze Gemfile.lock
-      run: bundle config set --local frozen false
-    - name: Bundle Update
-      run: bundle update
     - name: Bundle Install (Jekyll ${{ matrix.jekyll-version }})
       run: bundle install
       env:
@@ -52,10 +48,6 @@ jobs:
       with:
         ruby-version: "3.2"
         bundler-cache: false
-    - name: Unfreeze Gemfile.lock
-      run: bundle config set --local frozen false
-    - name: Bundle Update
-      run: bundle update
     - name: Bundle Install
       run: bundle install
       env:
@@ -81,10 +73,6 @@ jobs:
           ruby-version: ${{ matrix.ruby-version }}
           bundler-cache: true # runs 'bundle install' and caches installed gems automatically
           cache-version: 0 # Increment this number if you need to re-download cached gems
-      - name: Unfreeze Gemfile.lock
-        run: bundle config set --local frozen false
-      - name: Bundle Update
-        run: bundle update
       - name: Cache HTMLProofer
         id: cache-htmlproofer
         uses: actions/cache@v3
