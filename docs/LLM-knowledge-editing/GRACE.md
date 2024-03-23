@@ -1,6 +1,6 @@
 ---
 layout: default
-title: GREACE
+title: GRACE
 parent: LLM Knowledge Editing
 permalink: /docs/LLM-knowledge-editing/GREACE
 nav_order: 2
