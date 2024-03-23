@@ -59,9 +59,11 @@ To make an edit, a GRACE layer can perform one of two operations.
       * Set both keys' $$\epsilon$$ to be half of their distant apart.
 * If $$x_t$$ is passed into f again, $$h^{l-1}$$ would activate the codebook and value $$v$$ would be passed to layer $$l+1$$.
 
-### $$\epsilon_{init}$$ parameter
-* $$\epsilon_{init}$$ is the sole hyperparameter in GRACE.
-* Intuitively, using a larger $$\epsilon_{init}$$ will create edits with more influence, making edits more general, but increasing the interference with unrelated iniputs. 
+{: .note }
+<!-- To use the theme, you do ***not*** need to clone or fork the [Just the Docs repo]! You should do that only if you intend to browse the theme docs locally, contribute to the development of the theme, or develop a new theme based on Just the Docs. -->
+<!-- Please see different blog section in the left-side navigation bar. -->
+$$\epsilon_{init}$$ is the sole hyperparameter in GRACE.
+Intuitively, using a larger $$\epsilon_{init}$$ will create edits with more influence, making edits more general, but increasing the interference with unrelated inputs. 
 
 <div class="code-example" markdown="1">
 [Link button](https://just-the-docs.com){: .btn }
