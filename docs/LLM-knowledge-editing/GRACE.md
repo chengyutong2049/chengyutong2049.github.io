@@ -10,6 +10,9 @@ math: mathjax
 # GRACE (General Retrieval Adaptors for Continual Editing)
 {: .no_toc }
 
+[Github repo](https://github.com/chengyutong2049/GRACE)
+{: .fs-6 .fw-300 }
+
 ## Table of contents
 {: .no_toc .text-delta }
 
@@ -75,78 +78,73 @@ Intuitively, using a larger $$\epsilon_{init}$$ will create edits with more infl
   1. which token should be GRACE's input query
   2. which token to replace with a retrieved value in the subsequent layers
 
-<div class="code-example" markdown="1">
-[Link button](https://just-the-docs.com){: .btn }
+{: .note }
+Upon choosing these tokens, GRACE applies to all transformer models.
 
-[Link button](https://just-the-docs.com){: .btn .btn-purple }
-[Link button](https://just-the-docs.com){: .btn .btn-blue }
-[Link button](https://just-the-docs.com){: .btn .btn-green }
-
-[Link button](https://just-the-docs.com){: .btn .btn-outline }
-</div>
-```markdown
-[Link button](https://just-the-docs.com){: .btn }
-
-[Link button](https://just-the-docs.com){: .btn .btn-purple }
-[Link button](https://just-the-docs.com){: .btn .btn-blue }
-[Link button](https://just-the-docs.com){: .btn .btn-green }
-
-[Link button](https://just-the-docs.com){: .btn .btn-outline }
-```
-
-### Button element
-
-GitHub Flavored Markdown does not support the `button` element, so you'll have to use inline HTML for this:
-
-<div class="code-example">
-<button type="button" name="button" class="btn">Button element</button>
-</div>
-```html
-<button type="button" name="button" class="btn">Button element</button>
-```
+### Illustrative Example
+![](../../assets/images/LLM-knowledge-editing/neural-net.png){:width="400"}
+![](../../assets/images/LLM-knowledge-editing/image(2).png){:width="1100"}
+* Sample 100 instances from two 2D distributions corresponding to classes. (a)
+* Train a three-layer binary classifier with two 100-dimensional hidden layers and ReLU activations. (b)
+* Introduce edits with flipped labels (synthetic data), stimulating local label shift at test time.
+* The original model misclassifies these label flipped instances. (c)
+* GRACE fixes these label without impacting other inputs using a single key in layer 2. (d)
+* Finetuning on these errors alone break the model.
 
 ---
+## Experiment
+### Baselines
+* Continual learning methods
+  * Continually finetune ([**FT**](https://arxiv.org/pdf/2205.02014.pdf)) on streaming errors 
+  * Elastic weight consolidation ([**FT+EWC**](https://arxiv.org/pdf/1612.00796.pdf))
+  * Experience replay, periodicly retrain ([**FT+Retrain**](https://arxiv.org/pdf/1811.11682.pdf)) the model on previous edits.
+* Model editing methods
+  * [**MEND**](https://arxiv.org/pdf/2110.11309.pdf)
+  * **Defer**, inspired by [SERAC]((https://arxiv.org/pdf/2206.06520.pdf))
+  * [**ROME**](https://arxiv.org/pdf/2202.05262.pdf)
+* Ablation study
+  * Replace GRACE's discrete search with a **Memory** network containing memory module that is indexed by a soft attention mechanism.
 
-## Using utilities with buttons
+### Datasets and pretrained models
+![](../../assets/images/LLM-knowledge-editing/table(1).png){:width="1000"}
 
-### Button size
+* **Test retention data:** testing set of each model's training data.
+* **N:** the number of samples
+* **Pre-edit:** unedited model's performance on each dataset
 
-Wrap the button in a container that uses the [font-size utility classes]({% link docs/utilities/typography.md %}) to scale buttons:
-
-<div class="code-example" markdown="1">
-<span class="fs-6">
-[Big ass button](https://just-the-docs.com){: .btn }
-</span>
-
-<span class="fs-3">
-[Tiny ass button](https://just-the-docs.com){: .btn }
-</span>
-</div>
-```markdown
-<span class="fs-8">
-[Link button](https://just-the-docs.com){: .btn }
-</span>
-
-<span class="fs-3">
-[Tiny ass button](https://just-the-docs.com){: .btn }
-</span>
-```
-
-### Spacing between buttons
-
-Use the [margin utility classes]({% link docs/utilities/layout.md %}#spacing) to add spacing between two buttons in the same block.
 
 <div class="code-example" markdown="1">
-[Button with space](https://just-the-docs.com){: .btn .btn-purple .mr-2 }
-[Button](https://just-the-docs.com){: .btn .btn-blue }
-
-[Button with more space](https://just-the-docs.com){: .btn .btn-green .mr-4 }
-[Button](https://just-the-docs.com){: .btn .btn-blue }
+- **Row 1**: Edit a 60M T5 model 
+  - Model goal: QA (RE)
+  * Training data: Random 1k samples from NQ
+  * Edit data: [**zsRE**](https://arxiv.org/pdf/1706.04115.pdf)
+- **Row 2**: Edit a 110M BERT classifier 
+  - Model goal: Categorize US Supreme Court documents over multiple decades into 11 topics. 
+    - Over time, categorization rules change, so label distributions shift.
+  - Training data: 7.4k cases from [**SCOTUS**](https://arxiv.org/pdf/2203.07228.pdf) 1946-1982
+  - Edit data: 931 cases from [**SCOTUS**](https://arxiv.org/pdf/2203.07228.pdf) 1991-2009
+- **Row 3**: Edit a 1.5B GPT2-XL model 
+  - Model goal: Generate wikipedia-style biographies.
+  <!-- - Correct a GPT language model's **Hallucination** -->
+  - Training data: First 1k sentences from OpenWebText
+  - Edit data: SelfCheckGPT (**Hallucination**)
+    - Replace inaccurate data with corresponding sentences in the true wikipedia entries.
+      - 1392 sequential edits
+      <!-- - 592 already-accurate outputs -->
 </div>
-```markdown
-[Button with space](https://just-the-docs.com){: .btn .btn-purple .mr-2 }
-[Button](https://just-the-docs.com){: .btn .btn-blue }
 
-[Button with more space](https://just-the-docs.com){: .btn .btn-green .mr-4 }
-[Button](https://just-the-docs.com){: .btn .btn-blue }
-```
+### Metrics
+![](../../assets/images/LLM-knowledge-editing/table(2).png){:width="1000"}
+1.  Edit Success(**ES**): $$m(y,\hat{y})$$, $$m(\cdot)$$ is a task-specific measure of accuracy
+    - Stanford F1 for QA
+    - Accuracy for classification
+    - Perplexity for generation
+2. Test Retention Rate (**TRR**): How well an edited model retains its performance on its original testing data. 
+  
+    $$\frac{1}{N}\sum_{i=1}^{N}m(f(x_i),y_i)$$, $$(x_i, y_i)\in\mathcal{D}_{test}$$
+3. Edit Retention Rate (**ERR**): How well an edited model retains previous edits
+
+    $$\frac{1}{N}\sum_{i=1}^{N}m(f(x_i),y_i)$$, $$(x_i, y_i)\in\mathcal{D}_{edits}$$
+
+4. Number of edits (**#E**)
+
