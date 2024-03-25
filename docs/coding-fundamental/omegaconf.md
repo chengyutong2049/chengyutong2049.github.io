@@ -32,3 +32,8 @@ OmegaConf.register_new_resolver("uuid", lambda: 1)
 * Resolvers in OmegaConf allow for dynamic values in the configuration files, which are evaluated at runtime. 
 * This particular resolver doesn't do much useful as it's defined but serves as an example of how to set up a custom resolver.
 
+## OmegaConf.to_yaml
+```python
+OmegaConf.to_yaml(config)
+```
+* This line converts the OmegaConf `config` object to a YAML string.

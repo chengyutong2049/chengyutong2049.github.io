@@ -1,0 +1,195 @@
+---
+layout: default
+title: torch
+nav_order: 3
+has_children: false
+parent: Coding Fundamental
+permalink: /docs/coding-fundamental/torch
+math: mathjax
+---
+
+# torch
+{: .fs-9 }
+
+[Document](https://pytorch.org/docs/stable/index.html).
+{: .fs-6 .fw-300 }
+
+## Table of contents
+{: .no_toc .text-delta }
+
+1. TOC
+{:toc}
+
+---
+## torch.nn.Module
+```python
+class QAModel(torch.nn.Module):
+    def __init__(self, config):
+        super(QAModel, self).__init__()
+        self.model = get_hf_model(config).eval()
+        self.tokenizer = get_tokenizer(config)
+        self.device = config["device"]
+
+    def forward(self, batch):
+        logits = []
+        self.loss = []
+        for item in batch["text"]:
+            item = {f"{k1}" : v1.to(self.device) for k1, v1 in item.items()}
+            output = self.model(**item)
+            logits.append(output.logits)
+            try:
+                self.loss.append(output.loss)
+            except:
+                pass
+        self.loss = torch.stack(self.loss).mean()
+        return torch.stack(logits)
+
+    def get_loss(self, logits, batch):
+        return self.loss
+```
+*  defines a new class named QAModel that inherits from torch.nn.Module
+
+### super
+```python
+ super(QAModel, self).__init__()
+```
+* This line calls the constructor of the parent class, `torch.nn.Module`, with the arguments `QAModel` and `self`. These arguments are passed to super() to specify the class (QAModel) and the instance (self) from which the superclass methods are being called.
+* However, in Python 3, it's more common to see super() called without arguments inside a class method, which implicitly passes the current class and instance. 
+
+
+### model.modules()
+```python
+for m in model.modules():
+            if isinstance(m, nn.Dropout):
+                m.p = config.dropout
+                n_reset += 1
+```
+* This line iterates over all modules in the model and checks if the module is an instance of `nn.Dropout`.
+* The modules in a PyTorch model can be accessed using the `model.modules()` method, which returns an iterator over all modules in the model, including submodules.
+* If the module is an instance of `nn.Dropout`, the dropout probability `m.p` is set to the value specified in the `config` object, and the counter `n_reset` is incremented.
+
+### Definition of modules in pytorch
+[Explain.](https://stackoverflow.com/questions/51804692/what-exactly-is-the-definition-of-a-module-in-pytorch)
+
+* Base class for all neural network modules. Your models should also subclass this class. Modules can also contain other Modules, allowing to nest them in a tree structure. You can assign the submodules as regular attributes. Submodules assigned in this way will be registered, and will have their parameters converted too when you call .cuda(), etc.
+* All network components should inherit from nn.Module and override the forward() method. That is about it, as far as the boilerplate is concerned. Inheriting from nn.Module provides functionality to your component. For example, it makes it keep track of its trainable parameters, you can swap it between CPU and GPU with the .to(device) method, where device can be a CPU device torch.device("cpu") or CUDA device torch.device("cuda:0").
+
+### model.eval()
+[Explain.](https://stackoverflow.com/questions/60018578/what-does-model-eval-do-in-pytorch)
+
+* model.eval() is a kind of switch for some specific layers/parts of the model that behave differently during training and inference (evaluating) time. For example, Dropouts Layers, BatchNorm Layers etc. You need to turn them off during model evaluation, and .eval() will do it for you. In addition, the common practice for evaluating/validation is using torch.no_grad() in pair with model.eval() to turn off gradients computation:
+
+* Sets model in evaluation (inference) mode:
+
+  • normalisation layers use running statistics
+  • de-activates Dropout layers
+
+![](/assets/images/Code/eval(1).jpg){:"width"=70%}
+
+
+### batch of data
+```python
+import numpy as np
+import torch
+import torch.utils.data as data_utils
+
+# Create toy data
+x = np.linspace(start=1, stop=10, num=10)
+x = np.array([np.random.normal(size=len(x)) for i in range(100)])
+print(x.shape)
+# >> (100,10)
+
+# Create DataLoader
+input_as_tensor = torch.from_numpy(x).float()
+dataset = data_utils.TensorDataset(input_as_tensor)
+dataloader = data_utils.DataLoader(dataset,
+                                   batch_size=100,
+                                  )
+batch = next(iter(dataloader))
+
+print(type(batch))
+# >> <class 'list'>
+
+print(len(batch))
+# >> 1
+
+print(type(batch[0]))
+# >> class 'torch.Tensor'>
+```
+* batch is a list containing a single element, which is a torch.Tensor. This is because the DataLoader is configured to return a single batch of data with a batch size of 100. The batch contains 100 samples, each with 10 features. The shape of the tensor is (100, 10), corresponding to the batch size and feature dimensions.
+```python
+for item in batch["text"]:
+            item = {f"{k1}" : v1.to(self.device) for k1, v1 in item.items()}
+            output = self.model(**item)
+            logits.append(output.logits)
+            try:
+                self.loss.append(output.loss)
+            except:
+                pass
+```
+* In PyTorch, a batch is often represented as a tensor or a list/dictionary of tensors, depending on the complexity of the data and the model's requirements. The line `for item in batch["text"]:` suggests that, in this context, `batch` is expected to be a dictionary where one of the keys is `"text"`, and the value associated with this key is an iterable collection of items (likely tensors) that represent the input data to be processed.
+
+### Batch Normalization
+[Explain.](https://machinelearningmastery.com/batch-normalization-for-training-of-deep-neural-networks/)
+
+### Layer normalization
+
+### calling forward function
+```python
+output = self.model(**item)
+```
+* In PyTorch, when you call a model instance directly with arguments, it internally calls the model's forward method, passing those arguments. 
+
+### logits
+```python
+output = self.model(**item)
+logits.append(output.logits)
+```
+* `.logits`: This attribute of the output object contains the logits. For a classification model, each logit corresponds to the score of each class before applying the softmax function. For example, in a model trained to classify images into three categories, the logits might be a tensor like [2.0, -1.0, 0.5], indicating the raw scores for each of the three classes.
+
+### torch.stack
+```python
+# Python 3 program to demonstrate torch.stack() method 
+# for two one dimensional tensors 
+# importing torch 
+import torch 
+
+# creating tensors 
+x = torch.tensor([1.,3.,6.,10.]) 
+y = torch.tensor([2.,7.,9.,13.]) 
+
+# printing above created tensors 
+print("Tensor x:", x) 
+print("Tensor y:", y) 
+
+# join above tensor using "torch.stack()" 
+print("join tensors:") 
+t = torch.stack((x,y)) 
+
+# print final tensor after join 
+print(t) 
+
+print("join tensors dimension 0:") 
+t = torch.stack((x,y), dim = 0) 
+print(t) 
+
+print("join tensors dimension 1:") 
+t = torch.stack((x,y), dim = 1) 
+print(t) 
+```
+```cmd
+Tensor x: tensor([ 1.,  3.,  6., 10.])
+Tensor y: tensor([ 2.,  7.,  9., 13.])
+join tensors:
+tensor([[ 1.,  3.,  6., 10.],
+        [ 2.,  7.,  9., 13.]])
+join tensors dimension 0:
+tensor([[ 1.,  3.,  6., 10.],
+        [ 2.,  7.,  9., 13.]])
+join tensors dimension 1:
+tensor([[ 1.,  2.],
+        [ 3.,  7.],
+        [ 6.,  9.],
+        [10., 13.]])
+```
+
