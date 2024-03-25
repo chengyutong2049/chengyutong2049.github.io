@@ -8,6 +8,18 @@ math: mathjax
 ---
 
 # MEND: Model Editing Networks using Gradient Decomposition
+{: .fs-9 }
+Here we will introduce the paper: [Fast Model Editing at Scale](https://openreview.net/pdf?id=0DcZxeWfOPt).
+{: .fs-6 .fw-300 }
+
+## Table of contents
+{: .no_toc .text-delta }
+
+1. TOC
+{:toc}
+
+---
+
 
 If you run into any issues with the code, you can open an issue and/or email me at `eric.mitchell@cs.stanford.edu`
 

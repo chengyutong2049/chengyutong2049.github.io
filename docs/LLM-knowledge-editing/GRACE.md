@@ -9,7 +9,8 @@ math: mathjax
 ---
 
 # GRACE (General Retrieval Adaptors for Continual Editing)
-{: .no_toc }
+{: .fs-9 }
+<!-- {: .no_toc } -->
 
 [Github repo](https://github.com/chengyutong2049/GRACE)
 {: .fs-6 .fw-300 }

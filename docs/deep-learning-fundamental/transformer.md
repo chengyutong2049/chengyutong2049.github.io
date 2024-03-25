@@ -8,6 +8,19 @@ math: mathjax
 ---
 
 # Transformer
+{: .fs-9 }
+<!-- {: .no_toc } -->
+
+<!-- [Github repo](https://github.com/chengyutong2049/GRACE) -->
+{: .fs-6 .fw-300 }
+
+## Table of contents
+{: .no_toc .text-delta }
+
+1. TOC
+{:toc}
+
+---
 
 ##  3 broad categories of transformer models based on their training methodologies
 

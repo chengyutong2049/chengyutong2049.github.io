@@ -9,6 +9,17 @@ math: mathjax
 
 # Label Shift
 
+Here we will introduce the fundamental concepts of label shift in machine learning
+{: .fs-6 .fw-300 }
+
+## Table of contents
+{: .no_toc .text-delta }
+
+1. TOC
+{:toc}
+
+---
+
 ## Problem Formulation
 
 * A common assumption in machine learning is that the training set and test set are drawn from the

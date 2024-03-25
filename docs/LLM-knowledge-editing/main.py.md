@@ -7,6 +7,17 @@ permalink: /docs/ui-components/LLM-knowledge-editing/main.py/
 ---
 
 # main.py
+{: .fs-9 }
+./grace/main.py is the main file to kick off experiments.
+{: .fs-6 .fw-300 }
+
+## Table of contents
+{: .no_toc .text-delta }
+
+1. TOC
+{:toc}
+
+---
 
 ```python
 import hydra
