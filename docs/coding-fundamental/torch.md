@@ -193,3 +193,77 @@ tensor([[ 1.,  2.],
         [10., 13.]])
 ```
 
+### torch.utils.data.Dataset
+![](/assets/images/Code/dataset(1).jpg){:"width"=70%}
+
+[Code.](https://pytorch.org/docs/stable/_modules/torch/utils/data/dataset.html#Dataset)
+
+### torch.utils.data.DataLoader
+[Code.](https://pytorch.org/docs/stable/data.html#torch.utils.data.DataLoader)
+
+* Data loader combines a dataset and a sampler, and provides an iterable over the given dataset.
+
+The DataLoader supports both map-style and iterable-style datasets with single- or multi-process loading, customizing loading order and optional automatic batching (collation) and memory pinning.
+```python
+edit_loader = DataLoader(edits, batch_size=1, shuffle=True)
+```
+* This line creates a DataLoader object named `edit_loader` that loads data from the `edits` dataset with a batch size of 1 and shuffles the data before each epoch. The DataLoader is used to iterate over the dataset in batches during training or evaluation.
+* `dataset` (Dataset) – dataset from which to load the data.
+* `batch_size` (int, optional) – how many samples per batch to load (default: 1).
+  * number of samples we want to pass into the training loop at each iteration
+* `shuffle` (bool, optional) – set to True to have the data reshuffled at every epoch (default: False).
+* `batch_size=1` means that each batch will contain a single sample from the dataset. This is useful when you want to process each sample individually, such as in the case of sequence-to-sequence models or models that require different input sizes for each sample.
+  
+### batch_size and GPU memory's relation
+* Large Batch Sizes: A large batch size improves GPU utilisation by allowing more parallelism. GPUs are designed to handle massive amounts of data simultaneously, and larger batch sizes enable better exploitation of their computational power.
+[Explain.](https://www.linkedin.com/pulse/optimising-gpu-utilisation-finding-ideal-batch-size-maximum-bose#:~:text=The%20Relationship%20Between%20Batch%20Size%20and%20GPU%20Utilisation&text=Large%20Batch%20Sizes%3A%20A%20large,exploitation%20of%20their%20computational%20power.)
+
+### Difference btw DataLoader and Dataset
+[Explain.](https://mmengine.readthedocs.io/en/latest/tutorials/dataset.html)
+* Typically, a dataset defines the quantity, parsing, and pre-processing of the data, while a dataloader iteratively loads data according to settings such as batch_size, shuffle, num_workers, etc. 
+* Datasets are encapsulated with dataloaders and they together constitute the data source.
+
+
+### pad_token_id
+* This specific attribute of the tokenizer represents the ID (a numerical value) used to denote padding tokens in the tokenized input.
+  
+
+### padding tokens
+* Padding tokens are used to ensure that all sequences in a batch have the same length. This is necessary when working with neural networks that require fixed-size inputs, such as recurrent neural networks (RNNs) or transformers. By padding sequences to a common length, you can efficiently process multiple sequences in parallel without having to handle sequences of varying lengths separately.
+* model.tokenizer.pad_token_id is used to retrieve the ID of the padding token from the tokenizer associated with a pre-trained model.
+  * Padding tokens are used to fill sequences to a uniform length during batch processing.
+
+
+### named_parameters
+* named_parameters(prefix='', recurse=True, remove_duplicate=True)
+* Returns an iterator over module parameters, yielding both the name of the parameter as well as the parameter itself.
+  
+
+### requires_grad=False
+* If you want to freeze part of your model and train the rest, you can set requires_grad of the parameters you want to freeze to False.
+  ```python
+  for n, p in self.model.named_parameters():
+            p.requires_grad = False
+    ```
+
+## Indexing
+* PyTorch modules support indexing to access their submodules if they are stored in an ordered container like torch.nn.Sequential, torch.nn.ModuleList, or a custom module that implements the __getitem__ method to allow such access. 
+
+### __getitem__
+
+#### Map-style datasets
+A map-style dataset is one that implements the `__getitem__()` and `__len__()` protocols, and represents a map from (possibly non-integral) indices/keys to data samples.
+
+For example, such a dataset, when accessed with **dataset[idx]**, could read the idx-th image and its corresponding label from a folder on the disk.
+
+See Dataset for more details.
+
+#### Iterable-style datasets
+An iterable-style dataset is an instance of a subclass of IterableDataset that implements the `__iter__()` protocol, and represents an iterable over data samples. This type of datasets is particularly suitable for cases where random reads are expensive or even improbable, and where the batch size depends on the fetched data.
+
+For example, such a dataset, when called iter(dataset), could return a stream of data reading from a database, a remote server, or even logs generated in real time.
+
+See IterableDataset for more details.
+
+### DenseReluDense
+* This is a specific type of layer or component within the Transformer model. The name suggests it is a feed-forward neural network consisting of two dense (fully connected) layers with a ReLU activation function in between. This pattern is common in Transformer models, where it's used to process the data after the self-attention mechanism within each block. It's also known as a position-wise feed-forward network (FFN).
