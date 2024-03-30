@@ -141,7 +141,7 @@ Upon choosing these tokens, GRACE applies to all transformer models.
     - Stanford F1 for QA
     - Accuracy for classification
     - Perplexity for generation
-2. Test Retention Rate (**TRR**): How well an edited model retains its performance on its original testing data. 
+2. Test Retention Rate (**TRR**): How well a model retains its performance on its original testing data. 
   
     $$\frac{1}{N}\sum_{i=1}^{N}m(f(x_i),y_i)$$, $$(x_i, y_i)\in\mathcal{D}_{test}$$
 3. Edit Retention Rate (**ERR**): How well an edited model retains previous edits
@@ -216,5 +216,7 @@ Please use the following to cite this work:
   year={2023}
 }
 ```
+
+
 
 

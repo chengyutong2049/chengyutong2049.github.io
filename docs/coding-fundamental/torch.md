@@ -267,3 +267,122 @@ See IterableDataset for more details.
 
 ### DenseReluDense
 * This is a specific type of layer or component within the Transformer model. The name suggests it is a feed-forward neural network consisting of two dense (fully connected) layers with a ReLU activation function in between. This pattern is common in Transformer models, where it's used to process the data after the self-attention mechanism within each block. It's also known as a position-wise feed-forward network (FFN).
+
+### torch.no_grad()
+[Explain.](https://pytorch.org/docs/stable/generated/torch.no_grad.html)
+[Explain.](https://datascience.stackexchange.com/questions/32651/what-is-the-use-of-torch-no-grad-in-pytorch)
+
+
+### TORCH.NANMEAN
+* Computes the mean of all non-NaN elements along the specified dimensions.
+[Explain.](https://pytorch.org/docs/stable/generated/torch.nanmean.html)
+
+### torch.nn.parameter.Parameter
+[Explain](https://pytorch.org/docs/stable/generated/torch.nn.parameter.Parameter.html)
+* data (Tensor) – parameter tensor.
+* requires_grad (bool, optional) – if the parameter requires gradient.
+  * Note that the torch.no_grad() context does NOT affect the default behavior of Parameter creation–the Parameter will still have requires_grad=True in no_grad mode. 
+
+### What does the tensor’s “H”,”T” attributes mean?
+* [T explain](https://pytorch.org/docs/stable/tensors.html#torch.Tensor.T)
+* Returns a view of this tensor with its dimensions reversed.
+* If n is the number of dimensions in x, x.T is equivalent to x.permute(n-1, n-2, ..., 0).
+
+* [H explain](https://pytorch.org/docs/stable/tensors.html#torch.Tensor.H)
+* Returns a view of a matrix (2-D tensor) conjugated and transposed.
+* x.H is equivalent to x.transpose(0, 1).conj() for complex matrices and x.transpose(0, 1) for real matrices.
+
+```python
+import torch
+print(T)
+print(T.H)
+print(T.T)
+```
+```cmd
+tensor([[  363,  1075,   405,  7272,    63,  1347, 17328,   577,    16,  3370,   58,     1]]) # T
+
+tensor([[  363],
+        [ 1075],
+        [  405],
+        [ 7272],
+        [   63],
+        [ 1347],
+        [17328],
+        [  577],
+        [   16],
+        [ 3370],
+        [   58],
+        [    1]])   # T.H
+
+tensor([[  363],
+        [ 1075],
+        [  405],
+        [ 7272],
+        [   63],
+        [ 1347],
+        [17328],
+        [  577],
+        [   16],
+        [ 3370],
+        [   58],
+        [    1]])   # T.T
+```
+
+
+### TORCH.ISNAN
+[Explain.](https://pytorch.org/docs/stable/generated/torch.isnan.html)
+Returns a new tensor with boolean elements representing if each element of input is NaN or not. Complex values are considered NaN when either their real and/or imaginary part is NaN.
+```bash
+torch.isnan(torch.tensor([1, float('nan'), 2]))
+#tensor([False, True, False])
+```
+```python
+TRR = TRR[~torch.isnan(TRR)]##TRR[~torch.isnan(TRR)] applies this mask to the TRR tensor, selecting only the elements where the mask is True, i.e., filtering out all NaN values from TRR.
+```
+
+### .detach()
+```python
+key = query.detach()
+```
+* .detach(): This method is called on the query tensor. 
+* The detach() method creates a new tensor that does not require gradients, effectively detaching the resulting tensor from the computation graph. 
+* In PyTorch, tensors that require gradients keep track of operations performed on them to allow for gradient computation during backpropagation. 
+
+### .view(1)
+```python
+epsilon = torch.tensor(self.init_epsilon, device=self.device, requires_grad=False).view(1)
+```
+* .view(1): This method reshapes the tensor to have a single element. 
+* It's equivalent to reshaping the tensor to have the shape (1,), making it explicitly a 1-dimensional tensor with one element. 
+* This can be useful for ensuring compatibility with other tensors or operations that expect inputs of specific dimensions.
+
+#### .view(-1, len(query))
+```python
+ dists = torch.cdist(self.keys, query, p=2).view(-1, len(query))
+```
+* After computing the distances, the .view() method is used to reshape the resulting tensor. The -1 argument tells PyTorch to infer the size of this dimension based on the other dimensions, ensuring the total number of elements remains the same. len(query) sets the size of the second dimension explicitly to the number of vectors in query. This reshaping is typically done to ensure the tensor has a specific shape for subsequent operations or for easier interpretation of the results.
+![](/assets/images/Code/view1.jpg){:"width"=70%}
+![](/assets/images/Code/view2.jpg){:"width"=70%}
+
+
+### torch.cdist
+* This function computes the pairwise distances between two sets of vectors. 
+* The first set of vectors is self.keys, and the second set is query. 
+* The parameter p=2 specifies that the distance metric to be used is the Euclidean distance (also known as the L2 norm). 
+* The result of torch.cdist is a 2D tensor where each element (i, j) represents the distance between the i-th vector in self.keys and the j-th vector in query.
+
+### .min(0)
+* .min(0): The min function is called on the dists tensor with the argument 0, which specifies the dimension along which to find the minimum values. 
+* In this case, 0 refers to the first dimension (often corresponding to rows in a 2D tensor). 
+* This operation will find the minimum value in each column of the dists tensor, effectively identifying the smallest distance for each query point to the reference points in self.keys.
+![](/assets/images/Code/min1.jpg){:"width"=70%}
+
+# Tensor
+* 在深度学习里，Tensor实际上就是一个多维数组（multidimensional array）。
+* 而Tensor的目的是能够创造更高维度的矩阵、向量。
+  ![](/assets/images/Code/tensor1.jpeg){:"width"=70%}
+  ![](/assets/images/Code/tensor2.jpeg){:"width"=70%}
+  ![](/assets/images/Code/tensor3.jpeg){:"width"=70%}
+
+### len(tensor)
+* len(tensor) returns the length of the **first dimension** of the tensor.

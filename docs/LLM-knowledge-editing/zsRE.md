@@ -47,10 +47,44 @@ math: mathjax
     "meta": {
         "template_questions": ["What university did Watts Humphrey attend?"]
     }, 
-    "rephrases": ["Which university did Watts Humphrey attend?", "Which university has Watts Humphrey attended?", "Which university did Watts Humphrey go to?", "Which university has Watts Humphrey visited?", "Which university attended Watts Humphrey?", "Which university did Watts go to Humphrey?", "What university did Watts attend Humphrey at?", "Which university did Watts attend Humphrey?", "What university did Watts attend Humphrey?", "What university did Watts go to Humphrey?", "Which university did Watts Humphrey take part in?", "What university did Watts Humphrey take part in?", "Which university did Watts Humphrey participate in?", "Which university did Watts Humphrey study at?", "What university did Watts Humphrey study at?", "What university did Watts Humphrey go to?", "What university did Watts Humphrey attend?"], 
+    "rephrases": [
+        "Which university did Watts Humphrey attend?",
+        "Which university has Watts Humphrey attended?", 
+        "Which university did Watts Humphrey go to?", 
+        "Which university has Watts Humphrey visited?", 
+        "Which university attended Watts Humphrey?", 
+        "Which university did Watts go to Humphrey?", 
+        "What university did Watts attend Humphrey at?", 
+        "Which university did Watts attend Humphrey?", 
+        "What university did Watts attend Humphrey?", 
+        "What university did Watts go to Humphrey?", 
+        "Which university did Watts Humphrey take part in?", 
+        "What university did Watts Humphrey take part in?", 
+        "Which university did Watts Humphrey participate in?", 
+        "Which university did Watts Humphrey study at?", 
+        "What university did Watts Humphrey study at?", 
+        "What university did Watts Humphrey go to?", 
+        "What university did Watts Humphrey attend?"
+    ], 
     "prediction": "Trinity College", 
-    "alternatives": ["Yale University", "University of Chicago", "King's College London", "University of Michigan"], 
-    "filtered_rephrases": ["Which university has Watts Humphrey attended?", "Which university did Watts Humphrey take part in?", "Which university attended Watts Humphrey?", "Which university has Watts Humphrey visited?", "Which university did Watts Humphrey go to?", "Which university did Watts Humphrey attend?", "What university did Watts Humphrey take part in?", "What university did Watts Humphrey study at?", "What university did Watts Humphrey go to?", "Which university did Watts Humphrey participate in?", "Which university did Watts Humphrey study at?"
+    "alternatives": [
+        "Yale University", 
+        "University of Chicago", 
+        "King's College London", 
+        "University of Michigan"
+    ], 
+    "filtered_rephrases": [
+        "Which university has Watts Humphrey attended?", 
+        "Which university did Watts Humphrey take part in?", 
+        "Which university attended Watts Humphrey?", 
+        "Which university has Watts Humphrey visited?", 
+        "Which university did Watts Humphrey go to?", 
+        "Which university did Watts Humphrey attend?", 
+        "What university did Watts Humphrey take part in?", 
+        "What university did Watts Humphrey study at?", 
+        "What university did Watts Humphrey go to?", 
+        "Which university did Watts Humphrey participate in?", 
+        "Which university did Watts Humphrey study at?"
     ]
 }
 ```

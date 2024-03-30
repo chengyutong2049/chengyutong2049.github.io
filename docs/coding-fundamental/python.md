@@ -101,3 +101,14 @@ for component in components[:-1]:#encoder.block.4.layer.1 -> encoder.block.4.lay
 setattr(edit_module, layer_name, GRACEAdapter(config, original_layer, transpose=transpose).to(self.device))
 ```
 * This function dynamically sets an attribute on edit_module. It replaces the attribute named layer_name with the new GRACEAdapter instance. This is a critical step where the actual modification of the model takes place, inserting the GRACEAdapter in place of the original layer or parameter.
+
+## ** operator
+* The ** operator is used to unpack the dictionary tokens into keyword arguments.
+* This means that each key-value pair in the tokens dictionary is passed as a separate keyword argument to the self.model method.
+  ```python
+  tokens = {'input_ids': ..., 'attention_mask': ...}
+  ```
+  ```python
+  ### Then calling self.model(**tokens) is equivalent to:
+  self.model(input_ids=..., attention_mask=...)
+  ```   
