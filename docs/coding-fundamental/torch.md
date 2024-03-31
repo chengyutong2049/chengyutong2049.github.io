@@ -386,3 +386,44 @@ epsilon = torch.tensor(self.init_epsilon, device=self.device, requires_grad=Fals
 
 ### len(tensor)
 * len(tensor) returns the length of the **first dimension** of the tensor.
+
+### torch.vstack
+```python
+values = torch.nn.Parameter(torch.vstack([self.values, new_value]), requires_grad=True) # Add new value to list of values
+```
+* The torch.vstack() function is used to vertically stack the new_value tensor onto the self.values tensor. 
+* This operation effectively adds new_value as a new row to the self.values tensor, assuming new_value is a 2D tensor with a single row or a 1D tensor. 
+* The result is a new tensor that combines the original set of values with the new value.
+
+### torch.where
+```python
+import torch
+
+# Condition tensor
+condition = torch.tensor([True, False, True, False])
+
+# Tensors from which to choose values
+x = torch.tensor([1, 2, 3, 4])
+y = torch.tensor([10, 20, 30, 40])
+
+# Use torch.where to select elements
+result = torch.where(condition, x, y)
+
+print(result)  # Output: tensor([ 1, 20,  3, 40])
+```
+* In this example, elements from x are selected where condition is True, and elements from y are selected where condition is False.
+#### condition 的维度和x y什么关系
+##### 相同维度
+* 当 condition、x 和 y 具有完全相同的维度时，torch.where 会逐元素地检查 condition，并从 x 或 y 中选择相应的元素。例如，如果所有输入都是形状为 (2, 2) 的张量，那么 torch.where 会分别检查这些张量中的每个元素。
+##### 广播
+* PyTorch 支持自动广播（broadcasting），这意味着在某些情况下，即使 condition、x 和 y 的维度不完全相同，torch.where 也可以正常工作。广播规则允许较小的张量在某些维度上“扩展”以匹配较大张量的形状，但这需要遵循特定的规则：
+  * 如果 condition、x 和 y 中的一个或多个张量在某个维度上的大小为 1 而其他张量在该维度上的大小大于 1，则大小为 1 的张量会在该维度上扩展以匹配最大的大小。
+  * 如果 condition、x 和 y 中的一个张量在某个维度上不存在（即，它的维度数少于其他张量），则该张量会在缺失的维度上“扩展”以匹配其他张量的形状。
+
+### repeat_interleave
+```python
+torch.repeat_interleave(input, repeats, dim=None)
+```
+* input: The input tensor whose elements you want to repeat.
+* repeats: The number of repetitions for each element. This can be a scalar or a tensor specifying the number of repetitions for each element.
+* dim: The dimension along which to repeat values. If None, the input tensor is flattened before repeating, and the output will also be flat.
