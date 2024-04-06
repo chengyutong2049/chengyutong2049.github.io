@@ -347,6 +347,8 @@ key = query.detach()
 * .detach(): This method is called on the query tensor. 
 * The detach() method creates a new tensor that does not require gradients, effectively detaching the resulting tensor from the computation graph. 
 * In PyTorch, tensors that require gradients keep track of operations performed on them to allow for gradient computation during backpropagation. 
+ ![alt text](images/t/image-4.png)
+ 
 
 ### .view(1)
 ```python
@@ -427,3 +429,78 @@ torch.repeat_interleave(input, repeats, dim=None)
 * input: The input tensor whose elements you want to repeat.
 * repeats: The number of repetitions for each element. This can be a scalar or a tensor specifying the number of repetitions for each element.
 * dim: The dimension along which to repeat values. If None, the input tensor is flattened before repeating, and the output will also be flat.
+
+
+### unsqueeze(1)
+* 在张量的指定位置插入一个维度，其大小为1。当你调用unsqueeze(1)时，它会在第二个维度的位置（索引从0开始计算）插入一个新的维度。
+![alt text](images/t/image-3.png)
+* unsqueeze方法不会改变张量中的数据，只是改变了张量的形状。
+* 如果你需要在张量的最前面或最后面添加一个新维度，可以使用unsqueeze(0)或unsqueeze(-1)。
+```python
+x = torch.randn(3, 4)
+x.unsqueeze(1).shape
+torch.Size([3, 1, 4])
+x.unsqueeze(0).shape
+torch.Size([1, 3, 4])
+```
+
+### self.model.parameters()
+* a method call that returns an iterator over the parameters of the model, where self.model is an instance of a neural network model. 
+* These parameters typically include all the learnable weights and biases of the model. 
+* The method is commonly used when setting up an optimizer, which requires knowledge of the parameters it will be updating during the training process.
+
+### torch.optim.Adam
+```python
+optimizer = torch.optim.Adam(params, lr=0.001, betas=(0.9, 0.999), eps=1e-08, weight_decay=0, amsgrad=False)
+```
+*  `params` (iterable): Iterable of parameters to optimize or dictionaries defining parameter groups.
+
+
+### outputs.loss
+```python
+type(outputs)
+###<class 'transformers.modeling_outputs.Seq2SeqLMOutput'>
+loss = outputs.loss
+```
+* the outputs returned by the model includes a loss attribute. This means the loss calculation is likely integrated within the model's forward pass or immediately after it, within the same operation that produces outputs
+* The actual calculation of the loss depends on the model's implementation and the task at hand.
+  * For many tasks, especially classification, a common choice is Cross-Entropy Loss.
+  * If the task is regression, Mean Squared Error (MSE) might be used instead.
+* The specific loss function used (CrossEntropyLoss, MSELoss, etc.) requires the model's predictions and the true labels (targets) as inputs. 
+  * The true labels are part of tokens or otherwise provided to the model. 
+  * The loss function then compares the predictions against the true labels to compute the loss value, which quantifies how well the model's predictions match the true labels.
+  
+### optimizer.step()
+```python
+if i == 0:
+                # --- we only need to create an optimizer for the first iteration (but forward pass instantiates the key, so optimzer is passed after first inference) ---
+                optimizer = torch.optim.Adam(self.model.parameters(), config["editor"]["edit_lr"])
+loss = outputs.loss
+            print(f"loss of iteration {i}: {loss}")
+            loss.backward()
+            optimizer.step()
+```
+* This method applies the computed gradients to update the model's parameters. 
+* The specific way the parameters are updated depends on the optimization algorithm being used. 
+* For example, in the case of SGD, the update rule might look something like param = param - learning_rate * param.grad, where param is a parameter of the model, learning_rate is a hyperparameter that controls the size of the update step, and param.grad is the gradient of the loss function with respect to param.
+
+### optimizer.zero_grad()
+```python
+optimizer.zero_grad()
+```
+* This line clears (resets to zero) the gradients of all model parameters. 
+* Gradients in PyTorch accumulate by default, meaning that every time .backward() is called, the gradients of the loss with respect to the parameters are added to the existing gradients instead of replacing them. 
+* This feature is useful in certain contexts, like when training RNNs, but in most training loops, you want to prevent the accumulation from previous iterations.
+
+#### Why Clear Gradients?
+
+* Before computing the gradients for the current step, you need to ensure that the gradients from the previous step do not interfere. 
+* Failing to clear gradients would result in accumulating gradients across batches or iterations, which is typically not what you want for standard gradient descent optimization processes. 
+* This accumulation would lead to incorrect gradient values and, consequently, incorrect updates to the model's parameters, hindering the training process.
+* 这是为了确保每一次迭代的梯度计算都是基于最新的迭代而不是之前迭代的累积结果。
+
+#### loss.detach()
+* In PyTorch, when you perform operations on tensors that require gradients (i.e., tensors with requires_grad=True), PyTorch builds a computation graph that tracks the operations and the tensors involved. This graph is used during the backward pass to compute gradients with respect to some scalar value, typically a loss in the context of training neural networks.
+
+### self.trainig()
+* This line sets the model to training mode.

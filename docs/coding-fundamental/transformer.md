@@ -291,3 +291,8 @@ print(m)
 Dropout(p=0.1, inplace=False)
 ```
 * `Dropout(p=0.1, inplace=False)`: This line shows the dropout layer with a dropout probability of 0.1. Dropout is a regularization technique used to prevent overfitting by randomly setting a fraction of input units to zero at each update during training time.
+
+### forward() and generate()
+* forward() can be used both for training and inference. Forward refers to a single forward pass through the network. During training, we apply a forward pass to get the model’s predictions, and then do a backward pass to compute the gradients of the parameters with respect to the loss, which we then update. We then do another forward pass, followed by another backward pass etc. This is typically done on batches of data.
+* generate() can only be used at inference time, and uses forward() behind the scenes, in a sequence of time steps (see this post 157 for a simple showcase of that). The first forward is used to predict the first token, next we append the predicted token to the input of the next time step, which again uses forward() to predict the next token, and so on. This is called autoregressive generation. There are decoding strategies to decide which next token to take as prediction such as beam search, top k sampling, and so on (a detailed blog post can be found here 499).
+* model.generate方法是Hugging Face的Transformers库中某些模型类的一部分，用于生成文本。这个方法在内部会多次调用模型的forward方法来逐步生成文本序列。每次生成下一个词时，都会基于当前的上下文（即到目前为止生成的词）调用forward方法来预测下一个词。

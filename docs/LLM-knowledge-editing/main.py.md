@@ -3,7 +3,7 @@ layout: default
 title: main.py
 parent: GRACE
 grand_parent: LLM Knowledge Editing
-permalink: /docs/ui-components/LLM-knowledge-editing/main.py/
+permalink: /docs/LLM-knowledge-editing/main.py/
 ---
 
 # main.py
