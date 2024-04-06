@@ -18,7 +18,7 @@ Currently interested in LLM **Knowledge Conflict** and **Knowledge Editing**
 Welcome home, this is the knowledge base of CiCi.
 
 ## Getting started
-
+![](../../assets/images/samurai.mp4)
 
 
 {: .note }
