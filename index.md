@@ -20,7 +20,6 @@ Welcome home, this is the knowledge base of CiCi.
 ## Getting started
 <video loop autoplay muted controls>
   <source src="../../assets/images/samurai.mp4" type="video/mp4">
-  您的浏览器不支持视频标签。
 </video>
 
 
