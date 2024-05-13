@@ -112,3 +112,26 @@ setattr(edit_module, layer_name, GRACEAdapter(config, original_layer, transpose=
   ### Then calling self.model(**tokens) is equivalent to:
   self.model(input_ids=..., attention_mask=...)
   ```   
+
+## Python Set | update()
+Syntax :  
+```python
+set1.update(set2) 
+```
+
+* Here set1 is the set in which set2 will be added.
+
+## enumerate()
+```python
+for i, cluster in enumerate(clusters, 1):
+    print(f"Cluster {i}: {cluster}")
+```
+* 遍历的时候，索引从1开始，而不是从0开始
+![alt text](images/p/image.png)
+
+## iter(dict)
+* iter(self.graph) 创建了一个迭代器，用于遍历 self.graph 字典的键（即图的节点）
+
+
+## next()
+* next(iter(self.graph)) 调用了迭代器的 next 方法，返回图中的第一个节点（注意，字典是无序的，所以“第一个节点”是指在当前字典迭代顺序中的第一个节点，这个顺序在Python 3.7+中是插入顺序，在Python 3.6及以下是不确定的）
