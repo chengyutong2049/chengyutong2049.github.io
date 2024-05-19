@@ -9,8 +9,7 @@ math: mathjax
 
 # Git
 {: .fs-9 }
-### Table of contents
-{: .no_toc .text-delta }
+
 
 ## To Keep Changes Made in the Commit (Unstaged)
 If you want to keep the changes you made in that commit for further work but remove the commit itself, you can use:

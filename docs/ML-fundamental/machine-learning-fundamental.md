@@ -1,9 +1,9 @@
 ---
 layout: default
-title: Machine Learning Fundamental
+title: ML Fundamental
 nav_order: 3
 has_children: true
-permalink: /docs/machine-learning-fundamental
+permalink: /docs/ML-fundamental
 math: mathjax
 ---
 
